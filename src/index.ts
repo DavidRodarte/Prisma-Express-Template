@@ -11,8 +11,6 @@ class Server {
   private app: any
   // {number} port
   private port: number
-  //
-  private connection: any
   
   /**
    * Server constructor 
@@ -31,7 +29,7 @@ class Server {
   }
 
   public async database() {
-    this.connection = await createConnection()
+    await createConnection()
   }
  
 
