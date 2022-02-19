@@ -19,12 +19,12 @@ export class UserController {
    */
   @Get('/')
   public async index(@Body() data: any, @Res() response: Response): Promise<Response> {
-    // Create repository
-    const userRepository = getConnection().getRepository(User)
-    // Get all users with role relationship
-    const users = await userRepository.find({ relations: ['role'] })
-
     try {
+      // Create repository
+      const userRepository = getConnection().getRepository(User)
+      // Get all users with role relationship
+      const users = await userRepository.find({ relations: ['role'] })
+
       return response.json({
         users
       }) 
