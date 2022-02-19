@@ -1,21 +1,32 @@
-import { Request, Response } from "express"
-import { JsonController, Get, Post, Put, Delete, Req, Res, Param, Body } from "routing-controllers"
+import { getConnection } from "typeorm"
+import { Response } from "express"
+import { JsonController, Get, Post, Put, Delete, Res, Param, Body } from "routing-controllers"
 import { User } from "../entity/User"
 
+/**
+ * UserController class 
+ * @decorator `JsonController('/user')`
+ */
 @JsonController('/user')
 export class UserController {
 
   /**
    * Index method 
-   * Get /
+   * @decorator `Get('/')` 
+   * @param {any} data
    * @param {Response} response
    * @returns {Promise<Response>}
    */
   @Get('/')
-  public async index(@Res() response: Response): Promise<Response> {
+  public async index(@Body() data: any, @Res() response: Response): Promise<Response> {
+    // Create repository
+    const userRepository = getConnection().getRepository(User)
+    // Get all users with role relationship
+    const users = await userRepository.find({ relations: ['role'] })
+
     try {
       return response.json({
-        message: 'Getting users'
+        users
       }) 
     } catch (error) {
       return response.status(500).json({
@@ -26,7 +37,7 @@ export class UserController {
 
   /**
    * Get user by id 
-   * Get /id
+   * @decorator `Get('/:id')`
    * @param {number} id
    * @param {Response} response
    * @returns {Response}
@@ -34,8 +45,19 @@ export class UserController {
   @Get('/:id')
   public async getUser( @Param("id") id: number, @Res() response: Response ): Promise<Response> {
     try {
+      // Create repository
+      const userRepository = getConnection().getRepository(User)
+      // Find user by id and add role relationship
+      const user = await userRepository.findOne(id, { relations: ['role'] })
+
+      if( !user ){
+        return response.status(404).json({
+          message: `Error: User doesn't exist`
+        })
+      }
+
       return response.json({
-        message: 'Getting user '+id
+        user
       }) 
     } catch (error) {
       return response.status(500).json({
@@ -46,7 +68,8 @@ export class UserController {
 
   /**
    * Create new user 
-   * @param {Request} request
+   * @decorator `Post('/')`
+   * @param {any} data
    * @param {Response} response
    * @returns {Promise<Response>}
    */
@@ -54,8 +77,19 @@ export class UserController {
   public async createUser(@Body() data: any, @Res() response: Response): Promise<Response> {
     try {
       const { name, email, password } = data
-      return response.json({
-        message: `User ${email} created!`
+      
+      // Create new user
+      const user = new User()
+
+      user.name = name
+      user.email = email
+      user.password = password
+
+      await getConnection().manager.save(user)
+
+      return response.status(201).json({
+        message: `User created!`,
+        user
       })      
     } catch (error) {
       return response.status(500).json({
@@ -64,17 +98,37 @@ export class UserController {
     }
   }
 
-  /** Update user by id 
-   * @param {Request} request
+  /** 
+   * Update user by id 
+   * @decorator `Put('/:id')`
+   * @param {number} id
+   * @param {any} data
    * @param {Response} response 
    * @returns {Promise<Response>}
    */
   @Put('/:id')
-  public async updateUser( @Param('id') id: number, @Body() data:any, @Res() response: Response ): Promise<Response> {
+  public async updateUser( @Param('id') id: number, @Body() data: any, @Res() response: Response ): Promise<Response> {
     try {
       const { name, email, password } = data      
+
+      const userRepository = getConnection().getRepository(User)
+      const user = await userRepository.findOne(id)
+      
+      if( !user ){
+        return response.status(404).json({
+          message: `Error: User doesn't exist`
+        })
+      }
+
+      user.name = name
+      user.email = email
+      user.password = password
+
+      await userRepository.save(user)
+
       return response.json({
-        message: `User ${id} updated succesfully`
+        message: `User ${id} updated succesfully`,
+        user
       })
     } catch (error) {
       return response.status(500).json({
@@ -84,9 +138,9 @@ export class UserController {
     }
   }
 
-
   /**
    * Soft delete user by id (set isActive = false)
+   * @decorator `Delete('/:id')`
    * @param {number} id
    * @param {Response} response
    * @returns {Promise<Response>}
@@ -94,9 +148,23 @@ export class UserController {
   @Delete('/:id')
   public async deleteUser( @Param('id') id: number, @Res() response: Response): Promise<Response> {
     try {
+      const userRepository = getConnection().getRepository(User)
+      const user = await userRepository.findOne(id)
+      
+      if( !user ){
+        return response.status(404).json({
+          message: `Error: User doesn't exist`
+        })
+      }
+      
+      user.isActive = false 
+
+      await userRepository.save(user)
+
       return response.json({
-        message: `User ${id} deleted succesfully`
-      }) 
+        message: `User ${id} deactivated succesfully`,
+        user
+      })
     } catch (error) {
       return response.status(500).json({
         message: `Error ${error}`

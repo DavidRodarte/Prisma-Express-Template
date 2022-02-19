@@ -1,28 +1,39 @@
 import "reflect-metadata";
 import { createExpressServer } from 'routing-controllers';
 import dotenv from 'dotenv'
-import cors from 'cors'
 import { UserController } from './controllers/UserController'
+import { createConnection } from 'typeorm'
 
 dotenv.config()
 
 class Server {
-  
+  // {any} app
   private app: any
-  private port: Number
+  // {number} port
+  private port: number
+  //
+  private connection: any
   
   /**
    * Server constructor 
-   * @returns void
+   * initializes express server 
+   * and sets listening port
    */
   public constructor() {
     this.app = createExpressServer({
+      cors: true,
       controllers: [UserController],
-      middlewares: [cors()]
     })
 
     this.port = Number(process.env.PORT) || 3000
+    
+    this.database()
   }
+
+  public async database() {
+    this.connection = await createConnection()
+  }
+ 
 
   /**
    * Listen method
@@ -34,7 +45,7 @@ class Server {
     })
   }
 }
-
+// {Server} server
 const server = new Server()
 server.listen()
 
