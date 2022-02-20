@@ -103,6 +103,7 @@ export class UserController {
   /** 
    * Update user by id 
    * @decorator `Put('/:id')`
+   * @decorator `UseBefore(Auth)`
    * @param {number} id
    * @param {any} data
    * @param {Response} response 
@@ -144,6 +145,7 @@ export class UserController {
   /**
    * Soft delete user by id (set isActive = false)
    * @decorator `Delete('/:id')`
+   * @decorator `UseBefore(Auth)`
    * @param {number} id
    * @param {Response} response
    * @returns {Promise<Response>}
