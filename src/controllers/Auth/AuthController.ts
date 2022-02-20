@@ -35,6 +35,7 @@ export class AuthController {
           message: 'Wrong credentials'
         })
       }
+    
       // Verify password hashes
       const verifyPassword = bcryptjs.compareSync(password, user.password)
       

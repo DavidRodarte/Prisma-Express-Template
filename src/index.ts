@@ -5,6 +5,8 @@ import { createConnection } from 'typeorm'
 
 import { UserController } from './controllers/UserController'
 import { AuthController } from './controllers/Auth/AuthController'
+import { ErrorHandler } from "./middleware/ErrorHandler";
+import { check } from './utils/AuthorizationChecker'
 
 dotenv.config()
 
@@ -22,6 +24,9 @@ class Server {
   public constructor() {
     this.app = createExpressServer({
       cors: true,
+      defaultErrorHandler: false,
+      middlewares: [ErrorHandler],
+      authorizationChecker: check,
       controllers: [UserController, AuthController],
     })
 

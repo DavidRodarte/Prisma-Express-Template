@@ -1,9 +1,8 @@
 import { getConnection } from "typeorm"
 import { Response } from "express"
-import { JsonController, Get, Post, Put, Delete, Res, Param, Body, UseBefore } from "routing-controllers"
+import { JsonController, Get, Post, Put, Delete, Res, Param, Body, Authorized } from "routing-controllers"
 import { User } from "../entity/User"
 import { hash } from "../utils/Hash"
-import { Auth } from "../middleware/Auth"
 
 /**
  * UserController class 
@@ -110,13 +109,14 @@ export class UserController {
    * @returns {Promise<Response>}
    */
   @Put('/:id')
-  @UseBefore(Auth)
+  @Authorized('Admin')
   public async updateUser( @Param('id') id: number, @Body() data: any, @Res() response: Response ): Promise<Response> {
     try {
       const { name, email, password } = data      
-
       const userRepository = getConnection().getRepository(User)
       const user = await userRepository.findOne(id)
+
+      
       
       if( !user ){
         return response.status(404).json({
@@ -151,7 +151,7 @@ export class UserController {
    * @returns {Promise<Response>}
    */
   @Delete('/:id')
-  @UseBefore(Auth)
+  @Authorized('Admin')
   public async deleteUser( @Param('id') id: number, @Res() response: Response): Promise<Response> {
     try {
       const userRepository = getConnection().getRepository(User)
