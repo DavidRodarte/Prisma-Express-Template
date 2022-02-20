@@ -5,6 +5,7 @@ import { createConnection } from 'typeorm'
 
 import { UserController } from './controllers/UserController'
 import { AuthController } from './controllers/Auth/AuthController'
+
 dotenv.config()
 
 class Server {
