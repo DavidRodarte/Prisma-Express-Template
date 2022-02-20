@@ -1,9 +1,10 @@
 import "reflect-metadata";
 import { createExpressServer } from 'routing-controllers';
 import dotenv from 'dotenv'
-import { UserController } from './controllers/UserController'
 import { createConnection } from 'typeorm'
 
+import { UserController } from './controllers/UserController'
+import { AuthController } from './controllers/Auth/AuthController'
 dotenv.config()
 
 class Server {
@@ -20,7 +21,7 @@ class Server {
   public constructor() {
     this.app = createExpressServer({
       cors: true,
-      controllers: [UserController],
+      controllers: [UserController, AuthController],
     })
 
     this.port = Number(process.env.PORT) || 3000

@@ -2,6 +2,7 @@ import { getConnection } from "typeorm"
 import { Response } from "express"
 import { JsonController, Get, Post, Put, Delete, Res, Param, Body } from "routing-controllers"
 import { User } from "../entity/User"
+import { hash } from "../utils/Hash"
 
 /**
  * UserController class 
@@ -40,7 +41,7 @@ export class UserController {
    * @decorator `Get('/:id')`
    * @param {number} id
    * @param {Response} response
-   * @returns {Response}
+   * @returns {Promise<Response>}
    */
   @Get('/:id')
   public async getUser( @Param("id") id: number, @Res() response: Response ): Promise<Response> {
@@ -83,7 +84,7 @@ export class UserController {
 
       user.name = name
       user.email = email
-      user.password = password
+      user.password = await hash(password)
 
       await getConnection().manager.save(user)
 
@@ -122,7 +123,7 @@ export class UserController {
 
       user.name = name
       user.email = email
-      user.password = password
+      user.password = await hash(password)
 
       await userRepository.save(user)
 
