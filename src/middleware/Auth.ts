@@ -4,16 +4,18 @@ import jwt from 'jsonwebtoken'
 import {getConnection} from "typeorm";
 import {User} from "../entity/User";
 
+// JwtPayload interface with userId
 interface JwtPayload {
   userId: string
 }
 
-export class Auth implements ExpressMiddlewareInterface{
-  /**
+export class Auth implements ExpressMiddlewareInterface {
+    /**
      * Use middleware Auth 
-     * @param {any} request
-     * @param {any} response 
-     * @param {any} next
+     * @param {Request} request
+     * @param {Response} response 
+     * @param {NextFunction} next
+     * @returns {Promise<any>}
      */
     async use( request: Request, response: Response, next: NextFunction ): Promise<any> {
 
