@@ -4,8 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon ./dist/app.js",
-    "start": "ts-node src/app.ts"
+    "dev": "tsc --watch ",
+    "dev:watch": "nodemon ./dist/app.js",
+    "build": "tsc",
+    "start": "node ./dist/app.js"
   },
   "keywords": [],
   "author": "",
