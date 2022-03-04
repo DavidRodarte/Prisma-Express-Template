@@ -1,8 +1,9 @@
-# Simple TypeScript REST framework
+# Prisma Express Server
 
-Steps to run this project:
+<p>
+  <a href="#" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </a>
+</p>
 
-1. Install required packages by running `npm install`
-2. Setup database settings inside `ormconfig.json` or create and setup your .env file `cp .env.example .env`
-3. Run `tsc` command to build javascript files
-4. Run `node ./build/app.js` to start your application
+Base Express server template with Prisma ORM (v3), routing-controllers, JWT authentication & TypeScript
