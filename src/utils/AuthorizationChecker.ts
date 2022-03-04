@@ -16,7 +16,8 @@ export const authCheck = async (
   roles: string[],
 ): Promise<boolean> => {
   // Get token from headers
-  const token = action.request.headers['token'];
+  const authorization = action.request.headers['authorization'];
+  const token = authorization.replace('Bearer ', '');
 
   if (!token) {
     throw new UnauthorizedError('Missing token');
