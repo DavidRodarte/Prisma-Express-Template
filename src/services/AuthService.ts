@@ -28,7 +28,6 @@ export class AuthService {
 
       // Generate JWT
       const token = await generateJWT(user.uuid);
-      console.log(token);
 
       return {
         ok: 1,
