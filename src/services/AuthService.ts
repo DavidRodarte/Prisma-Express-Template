@@ -4,7 +4,16 @@ import { UserService } from '../services';
 import { generateJWT } from '../utils/generateJwt';
 import { LoginDto } from '../dtos/LoginDto';
 
+/**
+ * AuthService class
+ * @class
+ */
 export class AuthService {
+  /**
+   * Login method
+   * @param {LoginDto} loginDto
+   * @returns {Promise<{}>}
+   */
   async login(loginDto: LoginDto): Promise<{}> {
     try {
       const { email, password } = loginDto;

@@ -8,12 +8,19 @@ import { CreateUserDto } from '../dtos/CreateUserDto';
 import { IUser } from '../interfaces/IUser';
 import { hash } from '../utils/hash';
 
+/**
+ * UserService class
+ * @class
+ */
 export class UserService {
+  /** @type {PrismaClient} */
   private prisma: PrismaClient;
 
   /**
    * UserService constructor,
    * instantiates prisma object
+   * @constructor
+   * @returns void
    */
   constructor() {
     this.prisma = new PrismaClient();
@@ -21,6 +28,8 @@ export class UserService {
 
   /**
    * Get all users
+   * @memberof UserService
+   * @returns {Promise<IUser[]>}
    */
   async index(): Promise<IUser[]> {
     const users: IUser[] = await this.prisma.user.findMany({
@@ -43,7 +52,9 @@ export class UserService {
 
   /**
    * Get one user by UUID
+   * @memberof UserService
    * @param {string} uuid
+   * @returns {Promise<IUser | null>}
    */
   async getByUUID(uuid: string): Promise<IUser | null> {
     const user: IUser | null = await this.prisma.user.findUnique({
@@ -72,6 +83,9 @@ export class UserService {
 
   /**
    * Get user by email
+   * @memberof UserService
+   * @param {string} email
+   * @returns {Promise<IUser | null>}
    */
   async getByEmail(email: string): Promise<IUser | null> {
     try {
@@ -85,7 +99,9 @@ export class UserService {
 
   /**
    * Create user
+   * @memberof UserService
    * @param {CreateUserDto} createUserDto
+   * @returns {Promise<User>}
    */
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {

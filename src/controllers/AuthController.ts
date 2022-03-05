@@ -4,13 +4,21 @@ import { AuthService } from '../services';
 
 /**
  * AuthController class
+ * @class
  * @decorator `JsonController('/auth')`
  */
 @JsonController('/auth')
 export class AuthController {
+  /**
+   * authService property
+   * @private
+   * @type {AuthService}
+   */
   private authService: AuthService;
   /**
    * Instantiates AuthService
+   * @constructor
+   * @returns void
    */
   constructor() {
     this.authService = new AuthService();

@@ -5,6 +5,7 @@ import {
 import { Request, Response } from 'express';
 /**
  * ErrorHandler middleware class
+ * @class
  * @decorator `Middleware({ type: "after" })`
  */
 @Middleware({ type: 'after' })

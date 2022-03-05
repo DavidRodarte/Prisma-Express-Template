@@ -1,6 +1,10 @@
-import "reflect-metadata";
-import { Server } from "./server/Server";
+import 'reflect-metadata';
+import { Server } from './server/Server';
 
-const server = new Server();
+/**
+ * Instantiates Server
+ */
+const server: Server = new Server();
 
+/** Starts listening */
 server.listen();

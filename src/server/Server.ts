@@ -7,16 +7,22 @@ import { authCheck } from '../utils/authorizationChecker';
 
 dotenv.config();
 
+/**
+ * Server class
+ * @class
+ */
 export class Server {
-  // {any} app
+  /** @type {express.Application} */
   private app: express.Application;
-  // {number} port
+  /** @type {number} */
   private port: number;
 
   /**
    * Server constructor
    * initializes express server
    * and sets listening port
+   * @constructor
+   * @returns void
    */
   public constructor() {
     this.app = createExpressServer({
@@ -32,6 +38,7 @@ export class Server {
 
   /**
    * Listen method
+   * @memberof Server
    * @returns void
    */
   public listen(): void {

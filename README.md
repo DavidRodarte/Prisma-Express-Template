@@ -85,3 +85,7 @@ Build your application with `npm run build` or `yarn build` and then run it with
 
 - Website: https://davidrodarte.vercel.app
 - Github: [@DavidRodarte](https://github.com/DavidRodarte)
+
+## Licence
+
+MIT
