@@ -121,4 +121,24 @@ export class UserService {
       throw new BadRequestError(`Error: ${error}`);
     }
   }
+
+  /**
+   * Soft delete (set isActive=false) user
+   * @memberof UserService
+   * @param {string} uuid
+   * @returns {Promise<void>}
+   */
+  async delete(uuid: string): Promise<void> {
+    try {
+      // Verify if exists
+      this.getByUUID(uuid);
+
+      await this.prisma.user.update({
+        where: { uuid },
+        data: { isActive: false },
+      });
+    } catch (error) {
+      throw new BadRequestError(`Error: ${error}`);
+    }
+  }
 }

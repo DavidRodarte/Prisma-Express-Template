@@ -1,4 +1,12 @@
-import { Body, JsonController, Get, Param, Post } from 'routing-controllers';
+import {
+  Body,
+  JsonController,
+  Get,
+  Param,
+  Post,
+  Delete,
+  OnUndefined,
+} from 'routing-controllers';
 import { User } from '@prisma/client';
 import { UserService } from '../services/';
 import { CreateUserDto } from '../dtos/CreateUserDto';
@@ -56,5 +64,17 @@ export class UserController {
   @Post('/')
   create(@Body() data: CreateUserDto): Promise<User> {
     return this.userService.create(data);
+  }
+
+  /**
+   * Soft delete user
+   * @memberof UserController
+   * @param {string} uuid
+   * @returns {Promise<void>}
+   */
+  @Delete('/:uuid')
+  @OnUndefined(204)
+  delete(@Param('uuid') uuid: string): Promise<void> {
+    return this.userService.delete(uuid);
   }
 }
