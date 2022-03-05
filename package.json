@@ -4,8 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "tsc --watch ",
-    "dev:watch": "nodemon ./dist/app.js",
+    "dev": "tsc-watch --onSuccess \"node ./dist/app.js\"",
     "build": "tsc",
     "start": "node ./dist/app.js"
   },
@@ -31,6 +30,7 @@
     "nodemon": "^2.0.15",
     "prisma": "^3.10.0",
     "ts-node": "10.4.0",
+    "tsc-watch": "^4.6.0",
     "typescript": "4.5.2"
   },
   "dependencies": {
